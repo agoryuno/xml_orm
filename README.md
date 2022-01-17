@@ -81,7 +81,7 @@ simply assign a new name to 'table.filename' after the table object is
 instantiated.
 
 
-## Generating CREATE and reading data
+## Generating SQL and reading data
 
 Once a table object is instantiated you can generate SQL to add it to 
 a DB by simply triggering the object's __repr__ method in any convenient
@@ -95,3 +95,13 @@ table.read_table(data_dir)
 ```
 
 where data_dir is the path to the directory containing the XML file.
+
+Alternatively, you can use:
+
+```
+for sql, params in table.sql_inserts(data_dir):
+    cursor.execute(sql, params)
+```
+
+If you are using an SQLite or any other backend that supports passing 
+':param' style parameters in queries.
