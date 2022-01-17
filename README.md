@@ -10,6 +10,9 @@ A primitive object relational mapper developed to upload a specific
 dataset into a DB. This ORM, however, is general enough for use with
 any XML datasets. 
 
+It is designed to be smaller and more focused than something like
+SqlAlchemy which can do this and more.
+
 It is designed to translate XML into SQL and allows the user to 
 declare "embedded" tables - tables with records in XML tags inside
 XML tags for the records of a higher level table.
