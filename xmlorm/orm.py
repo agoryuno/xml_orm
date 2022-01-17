@@ -90,11 +90,7 @@ where data_dir is the path to the directory containing the XML file.
 from hashlib import sha256
 from xml.etree import ElementTree
 
-from tqdm import tqdm
-
 TOP_LEVEL_TAG = "DATA_RECORDS/DATA_RECORD"
-
-
 
 class Integer:
     def __repr__(self):
@@ -130,9 +126,6 @@ class Column:
         pk = {True : " primary key", False: ""}[self.is_primary_key]
         not_null = {True : " not null", False: ""}[self.is_not_null]
         return f"{self.name} {self.type}{pk}{not_null}"
-
-
-
 
 class Table:
     """
@@ -174,8 +167,6 @@ class Table:
 
             assert tag_name, ("Argument tag_name cannot be None if"
                 " parent_table is set.")
-
-
         self.columns = {c.name : c for c in columns}
         fkeys = fkeys or []
         self.foreign_keys = tuple(fk for fk in fkeys)
@@ -291,7 +282,7 @@ class Table:
         root = ElementTree.parse(fname).getroot()
 
         data = []
-        for parent in tqdm(root.findall(parent_tag)):
+        for parent in root.findall(parent_tag):
             parent_row = self.parent_table.read_row(parent)
             parent_hash = self.parent_table.get_hash_key(parent_row)
             for el in parent.findall(child_tag):
@@ -306,7 +297,7 @@ class Table:
         root = ElementTree.parse(fname).getroot()
 
         data = []
-        for el in tqdm(root.findall(root_tag)):
+        for el in root.findall(root_tag):
 
             row = self.read_row(el)
             if self.hash_key:
