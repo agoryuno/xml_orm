@@ -76,7 +76,7 @@ Once a table object is instantiated you can generate SQL to add it to
 a DB by simply triggering the object's __repr__ method in any convenient
 way, for instance simply with: f"{table}"
 
-The data for the table can be read from the corresponding XML file by
+Data for the table can be read from the corresponding XML file by
 calling:
 
 ```
