@@ -13,4 +13,4 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url='https://github.com/agoryuno/xml_orm',
     license='MIT',
-    packages=['xmlorm])
+    packages=['xmlorm'])
