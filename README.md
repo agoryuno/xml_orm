@@ -1,3 +1,11 @@
+## Installation
+
+To install using pip:
+
+`pip install git+https://github.com/agoryuno/xml_orm`
+
+## Description
+
 A primitive object relational mapper developed to upload a specific
 dataset into a DB. This ORM, however, is general enough for use with
 any XML datasets. 
