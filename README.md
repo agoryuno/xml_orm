@@ -9,6 +9,7 @@ XML tags for the records of a higher level table.
 For example the following XML snippet, contained in a file named
 "people.xml":
 
+```
 <person>
     <record>
         <name>John</name>
@@ -23,9 +24,11 @@ For example the following XML snippet, contained in a file named
         </employers>
     </record>
 </person>
+```
 
 Can be declared as two DB tables:
 
+```
 from orm import Table, Column, PrimaryKey
 
 tables = {}
@@ -46,7 +49,7 @@ tables["employers"] = Table(name="employers",
         Column("address")
     ),
     parent_table=tables["people"])
-
+```
 
 Here the 'employers' table is linked with the 'people' table via a 
 foreign key 'parent_hash', which is automatically added to 'employers'
@@ -76,6 +79,8 @@ way, for instance simply with: f"{table}"
 The data for the table can be read from the corresponding XML file by
 calling:
 
+```
 table.read_table(data_dir)
+```
 
 where data_dir is the path to the directory containing the XML file.
