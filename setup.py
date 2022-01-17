@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as f:
     
 setuptools.setup(
     name='xmlorm',
-    version='0.0.2',
+    version='0.0.3',
     author='Alexander Goryunov',
     author_email='alex.goryunov@gmail.com',
     description='A basic XML to SQL converter',

@@ -323,6 +323,24 @@ class Table:
         data = self.__read_parent(fname)
         return data
 
+    def sql_inserts(self, data_dir):
+        """
+        A generator returning rows of the table as
+        individual pairs of INSERT statement - parameter dict 
+        """
+
+        data = self.read_table(data_dir)
+        for row in data:
+            names = ",".join([n for n in self.columns.keys()])
+
+            vals = ",".join([f":{n}" for n in self.columns.keys()])
+
+            s = f'''insert or ignore into {self.name} ({names}) 
+                values ({vals});'''
+            pars = {k : row[k] for k in self.columns.keys()}
+            yield s,pars
+
+
 
 class ForeignKey:
     """
