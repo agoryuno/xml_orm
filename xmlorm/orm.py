@@ -1,11 +1,11 @@
 """
-A primitive object relational mapper developed to upload a specific
-dataset into a DB. This ORM, however, is general enough for use with
-any XML datasets. 
+A primitive object relational mapper, originally developed to load 
+a specific XML-formatted dataset into a DB. This ORM, however, is 
+general enough for use with any XML datasets. 
 
 It is designed to translate XML into SQL and allows the user to 
-declare "embedded" tables - tables with records in XML tags inside
-XML tags for the records of a higher level table.
+declare "embedded" tables with records contained inside a 
+parent XML table.
 
 For example the following XML snippet, contained in a file named
 "people.xml":
@@ -27,7 +27,7 @@ For example the following XML snippet, contained in a file named
 </person>
 ```
 
-Can be declared as two DB tables:
+can be declared as two DB tables:
 
 ```
 from orm import Table, Column, PrimaryKey
@@ -86,28 +86,48 @@ table.read_table(data_dir)
 
 where data_dir is the path to the directory containing the XML file.
 """
-
+import abc
 from hashlib import sha256
 from xml.etree import ElementTree
 
 TOP_LEVEL_TAG = "DATA_RECORDS/DATA_RECORD"
 
-class Integer:
-    def __repr__(self):
-        return "integer"
 
-class Timestamp:
-    def __repr__(self):
-        return "timestamp"
+class ColumnType(abc.ABC):
 
-class Real:
-    def __repr__(self):
-        return "real"
+    def __init__(self, *args):
+        self.args = args
 
-class Text:
-    def __repr__(self):
-        return "text"
+    @property
+    @abc.abstractmethod
+    def sql(self):
+        ...
 
+    def __repr__(self):
+        if len(self.args) > 0:
+            return f"{self.sql}({','.join([str(a) for a in self.args])})"
+        return self.sql
+
+    def __str__(self):
+        return self.__repr__()
+        
+class Integer(ColumnType):
+    sql = "integer"
+
+class Timestamp(ColumnType):
+    sql = "timestamp"
+
+class Real(ColumnType):
+    sql = "real"
+
+class Text(ColumnType):
+    sql = "text"
+
+class Char(ColumnType):
+    sql = "char"
+
+class Varchar(ColumnType):
+    sql = "varchar"
 
 class Column:
     """
@@ -158,6 +178,7 @@ class Table:
 
     def __init__(self, name, columns, top_tag, fkeys=None, pkey=None,
         parent_table=None, hash_key=None, tag_name=None):
+
         self.name = name
 
         self.top_tag = top_tag
