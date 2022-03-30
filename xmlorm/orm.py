@@ -110,7 +110,7 @@ class ColumnType(abc.ABC):
 
     def __str__(self):
         return self.__repr__()
-        
+
 class Integer(ColumnType):
     sql = "integer"
 
@@ -213,7 +213,9 @@ class Table:
     def __repr__(self):
         cols = ',\n'.join([f"  {c}" for c in self.columns.values()])
 
-        s = f"create table if not exists {self.name} ({cols}"
+        s = f"""
+create table if not exists {self.name} (
+{cols}"""
 
         if len(self.foreign_keys) > 0:
             s += ",\n"
@@ -243,6 +245,7 @@ class Table:
         if "hash_id" not in self.columns:
             self.columns["hash_id"] = Column("hash_id", primary_key=True,
                 not_null=True)
+
 
     def __enforce_parent_hash(self):
         if not self.parent_table:
@@ -294,6 +297,7 @@ class Table:
                     val = data_types[child.tag](val)
                 row[child.tag] = val
         return row
+
 
     def __read_child(self, fname):
         assert self.parent_table.hash_key
